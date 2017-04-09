@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+
+  <groupId>com.devplant.introduction</groupId>
+  <artifactId>spring-basics-webapp</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>spring-basics-webapp</name>
+
+  <properties>
+    <docker.image.prefix>devplant</docker.image.prefix>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>docker-image</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.4.13</version>
+            <configuration>
+              <serverId>docker-hub</serverId>
+              <imageName>${docker.image.prefix}/${project.name}</imageName>
+              <dockerDirectory>${project.basedir}/docker</dockerDirectory>
+              <resources>
+                <resource>
+                  <targetPath>/dist</targetPath>
+                  <directory>${project.basedir}/dist</directory>
+                  <include>*</include>
+                </resource>
+              </resources>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build-image</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.3.2</version>
+        <executions>
+          <!-- Required: The following will ensure `npm install` is called
+                         before anything else during the 'Default Lifecycle' -->
+          <execution>
+            <id>npm install (initialize)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>initialize</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>install</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <!-- Required: The following will ensure `npm install` is called
+                         before anything else during the 'Clean Lifecycle' -->
+          <execution>
+            <id>npm install (clean)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>pre-clean</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>install</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
+          <!-- Optional: The following will output the npm configuration.
+                         I do this so my CI logs will show the npm information used
+                             for the build -->
+          <execution>
+            <id>npm config list (validate)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>validate</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>config</argument>
+                <argument>list</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
+          <!-- Required: This following calls `npm run build` where 'build' is
+                         the script name I used in my project, change this if yours is
+                             different -->
+          <execution>
+            <id>npm run build (compile)</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <executable>ng</executable>
+              <arguments>
+                <argument>build</argument>
+                <argument>--env=prod</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
+
+        </executions>
+
+
+      </plugin>
+
+
+    </plugins>
+  </build>
+
+
+</project>

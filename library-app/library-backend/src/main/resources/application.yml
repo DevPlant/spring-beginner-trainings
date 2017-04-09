@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: sample-data,dev
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: smart0asss@gmail.com
+    password: xktgqymujlzkwtce
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            thrust: smtp.gmail.com
+          starttls:
+            required: true
+            enabled: true
+
+

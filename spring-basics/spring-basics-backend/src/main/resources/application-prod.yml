@@ -1,0 +1,8 @@
+grettings:
+  goodbye-message: 'See ya, friend!'
+
+server:
+  port: 7000
+spring:
+  profiles:
+    active: prod

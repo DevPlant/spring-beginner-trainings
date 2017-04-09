@@ -1,0 +1,6 @@
+grettings:
+  goodbye-message: 'See ya, friend!'
+spring:
+  profiles:
+    active: dev
+

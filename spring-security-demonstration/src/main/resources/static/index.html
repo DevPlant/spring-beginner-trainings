@@ -1,0 +1,40 @@
+<html>
+<body>
+<h1>Hello Victim</h1>
+
+<h3 id="welcome"></h3>
+
+<input id="change-welcome">
+<button onclick="changeWelcome()">Set Welcome</button>
+
+</body>
+
+
+<script
+        src="https://code.jquery.com/jquery-3.2.0.min.js"
+        integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I="
+        crossorigin="anonymous"></script>
+
+<script>
+
+    $.ajax({
+        url: "secure/get-welcome",
+        success: function (response) {
+            $("#welcome").html(response);
+        }
+    });
+
+    function changeWelcome() {
+        $.ajax({
+            url: "secure/change-welcome",
+            method: 'POST',
+            contentType: "text/plain",
+            data: $('#change-welcome').val(),
+            success: function (response) {
+                alert('Welcome set!');
+            }
+        });
+    }
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+<md-toolbar color="primary">
+  <span>Spring Introduction Webapp</span>
+</md-toolbar>
+
+<div fxLayout="column" fxLayoutAlign="center center">
+
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="simple-card">
+
+    <form name="form" (ngSubmit)="sayHello()" fxLayout="column" #helloForm="ngForm"
+          *ngIf="state == viewState.Initial">
+      <h3>Lets Try out our services, enter your name</h3>
+      <md-input-container>
+
+        <input type="text" id="message" class="form-control"
+               required minlength="4" maxlength="24"
+               placeholder="Your Name"
+               name="message" [(ngModel)]="greeting.message" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <button md-raised-button type="submit" [disabled]="!helloForm.form.valid">Say Hello</button>
+    </form>
+
+
+    <form (ngSubmit)="sayGoodbye()" fxLayout="column" *ngIf="state == viewState.Hello">
+      <h3>{{helloGreeting.message}}</h3>
+      <button md-raised-button type="submit">Say goodbye</button>
+    </form>
+
+
+    <form (ngSubmit)="tryAgain()" fxLayout="column" *ngIf="state == viewState.Goodbye">
+      <h3>{{goodbyeGreeting.message}}</h3>
+      <button md-raised-button type="submit">Try Again</button>
+    </form>
+
+
+  </md-card>
+</div>

