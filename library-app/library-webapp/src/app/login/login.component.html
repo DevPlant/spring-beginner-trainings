@@ -1,0 +1,40 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-small  register-form">
+
+
+    <form name="form" (ngSubmit)="doLogin()" fxLayout="column" fxLayoutAlign="space-around stretch"
+          #loginForm="ngForm">
+      <h3>DevPlant Library Login</h3>
+
+
+      <md-input-container>
+
+        <input type="text" id="username" class="form-control"
+               required
+               placeholder="Username/Email"
+               name="username" [(ngModel)]="loginModel.username" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <md-input-container>
+
+        <input id="email" class="form-control"
+               required
+               placeholder="Password"
+               type="password"
+               name="password" [(ngModel)]="loginModel.password" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <h5 *ngIf="loginError">Login Failed, Username or password invalid</h5>
+
+      <div class="button-row">
+        <button md-raised-button type="submit" color="primary" [disabled]="!loginForm.form.valid">Login</button>
+      </div>
+
+    </form>
+
+  </md-card>
+</div>

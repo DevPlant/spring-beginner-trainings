@@ -1,5 +1,9 @@
 package com.devplant.introduction.domain;
 
+import com.devplant.introduction.configuration.Roles;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,15 +48,17 @@ public class User implements UserDetails {
 	@NotEmpty
 	private String lastName;
 
+	@JsonIgnore
 	private String password;
 
 	@Column(unique = true)
 	private String activationId;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonBackReference
 	private List<BookStock> reservedBookStocks;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<UserAuthority> authorities;
 
 	private boolean accountNonExpired = true;
@@ -62,6 +69,10 @@ public class User implements UserDetails {
 
 	private boolean enabled;
 
+	public String getFullName() {
+		return this.firstName + " " + this.lastName;
+	}
+
 	public User(String firstName, String lastName, String email, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -69,6 +80,7 @@ public class User implements UserDetails {
 		this.email = email;
 		this.password = password;
 		this.activationId = UUID.randomUUID().toString();
+		this.authorities = Lists.newArrayList(new UserAuthority(Roles.ROLE_USER));
 	}
 
 }

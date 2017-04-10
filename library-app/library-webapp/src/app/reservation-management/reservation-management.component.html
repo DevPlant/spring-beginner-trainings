@@ -1,0 +1,42 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <br>
+
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-large register-form">
+    <md-tab-group>
+      <md-tab label="Pickups">
+        <md-list>
+          <h3 md-subheader>Books to be picked up</h3>
+
+          <ng-container *ngFor="let bookstock of bookStocks">
+            <md-list-item *ngIf="!bookstock.pickedUp">
+              <md-icon md-list-icon>folder</md-icon>
+              <h3 md-line><strong>Book: {{bookstock.bookName}}</strong></h3>
+              <h4 md-line><strong>To be picked up by: </strong>{{bookstock.user.fullName}}</h4>
+              <p md-line><strong>Pickup date: </strong> {{bookstock.pickupDate | date}} </p>
+
+              <button md-button (click)="markAsPickedUp(bookstock)">Book picked up</button>
+
+            </md-list-item>
+          </ng-container>
+        </md-list>
+      </md-tab>
+      <md-tab label="Returns">
+        <md-list>
+          <h3 md-subheader>Books to be returned</h3>
+          <ng-container *ngFor="let bookstock of bookStocks">
+            <md-list-item *ngIf="bookstock.pickedUp">
+              <md-icon md-list-icon>note</md-icon>
+              <h3 md-line><strong>Book: {{bookstock.bookName}}</strong></h3>
+              <h4 md-line><strong>To be returned up by: </strong>{{bookstock.user.fullName}}</h4>
+              <p md-line><strong>Return date: </strong> {{bookstock.returnDate | date}} </p>
+
+              <button md-button (click)="markAsReturned(bookstock)">Book returned</button>
+
+            </md-list-item>
+          </ng-container>
+        </md-list>
+      </md-tab>
+    </md-tab-group>
+  </md-card>
+</div>
+

@@ -1,19 +1,19 @@
 version: '2'
 services:
 
-  spring-basics-webapp:
-    image: devplant/spring-basics-webapp
+  library-webapp:
+    image: devplant/library-webapp
     restart: always
     links:
-      - spring-basics-backend
+      - library-backend
     ports:
       - 8080:80
     environment:
       - VIRTUAL_HOST=*
       - VIRTUAL_HOST_WEIGHT=0
 
-  spring-basics-backend:
-    image: devplant/spring-basics-backend
+  library-backend:
+    image: devplant/library-backend
     restart: always
     ports:
       - 7000:7000
@@ -24,8 +24,8 @@ services:
   proxy:
     image: dockercloud/haproxy
     links:
-      - spring-basics-webapp
-      - spring-basics-backend
+      - library-backend
+      - library-webapp
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:

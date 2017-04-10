@@ -15,5 +15,14 @@ spring:
           starttls:
             required: true
             enabled: true
-
+user:
+  registration:
+    account-already-activated-url: 'http://localhost:4200/already-activated'
+    activation-failed-url: 'http://localhost:4200/activation-failed'
+    activation-success-url: 'http://localhost:4200/activation-successful'
+    activation-link-template: 'http://localhost:8080/api/user-management/activate?activationId=%s'
+admin:
+  user:
+    password: 'admin'
+    username: 'admin@devplant.ro'
 

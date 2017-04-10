@@ -1,8 +1,84 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
+@import '~@angular/material/prebuilt-themes/purple-green.css';
 
-.simple-card{
-  margin: 20px;
-  width: 320px;
-  height: 320px;
+.card-small {
+  width: 560px;
+  max-width: 560px;
+  margin: 10px;
+}
+
+.card-medium {
+  width: 720px;
+  max-width: 720px;
+  margin: 10px;
+}
+
+.card-large {
+  width: 1280px;
+  max-width: 1280px;
+  margin: 10px;
+}
+
+.md2-datepicker-header {
+  background: #7b1fa2 !important;
+}
+
+.md2-calendar-day.focus, .md2-calendar-day:hover {
+  background: #e0e0e0;
+}
+
+.md2-calendar-day.today {
+  color: #7b1fa2 !important;
+}
+
+.md2-calendar-day.selected, .md2-calendar-day.selected:hover {
+  color: #fff !important;
+  background: #7b1fa2 !important;
+}
+
+.md2-datepicker-actions .md2-button {
+  color: #424242 !important;
+}
+
+.md2-datepicker-button {
+  color: #fff !important;
+}
+
+.md2-datepicker-clear {
+  color: #fff !important;
+}
+
+.md2-datepicker-value {
+  color: #fff !important;
+}
+
+.md2-datepicker-placeholder {
+  color: #fff !important;
+}
+
+.md2-datepicker-value {
+  color: #fff !important;
+}
+
+.md2-datepicker-input.md2-datepicker-input-focused{
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.md2-datepicker-arrow{
+  color: #fff !important;
+}
+
+
+.md2-datepicker-placeholder {
+  color: #fff !important;
+}
+
+.md2-datepicker-input {
+  border-bottom: 1px solid #fff !important;
+
+}
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
 }

@@ -1,9 +1,9 @@
 package com.devplant.introduction.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Document(indexName = "publisher")
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "books")
 public class Publisher {
@@ -28,5 +27,6 @@ public class Publisher {
 	private String name;
 
 	@ManyToMany(mappedBy = "publishers")
+	@JsonBackReference
 	private List<Book> books;
 }

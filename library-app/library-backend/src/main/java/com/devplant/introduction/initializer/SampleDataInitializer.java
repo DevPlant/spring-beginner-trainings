@@ -7,23 +7,23 @@ import com.devplant.introduction.domain.Publisher;
 import com.devplant.introduction.domain.User;
 import com.devplant.introduction.exception.BookAlreadyReservedByUserException;
 import com.devplant.introduction.exception.BookNotAvailableForReservationException;
-import com.devplant.introduction.repository.AuthorRepository;
-import com.devplant.introduction.repository.BookRepository;
-import com.devplant.introduction.repository.BookStockRepository;
-import com.devplant.introduction.repository.PublisherRepository;
-import com.devplant.introduction.repository.UserRepository;
+import com.devplant.introduction.repository.jpa.AuthorRepository;
+import com.devplant.introduction.repository.jpa.BookRepository;
+import com.devplant.introduction.repository.jpa.BookStockRepository;
+import com.devplant.introduction.repository.jpa.PublisherRepository;
+import com.devplant.introduction.repository.jpa.UserRepository;
 import com.devplant.introduction.service.BookReservationService;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -33,7 +33,7 @@ import java.util.stream.IntStream;
 @Service
 @Slf4j
 @Profile("sample-data")
-public class SampleDataInitializer {
+public class SampleDataInitializer implements CommandLineRunner {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SampleDataInitializer.class);
 
@@ -58,7 +58,6 @@ public class SampleDataInitializer {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@PostConstruct
 	@Transactional
 	protected void addSampleData() {
 
@@ -188,9 +187,8 @@ public class SampleDataInitializer {
 
 		List<Book> books = Lists.newArrayList(lotr1, lotr2, lotr3, got1, got2, got3, got4, got5);
 
-		books.forEach(book -> book.setStocks(
-				IntStream.range(0, new Random().nextInt(3) + 1).mapToObj(i -> new BookStock(book))
-						.collect(Collectors.toList())));
+		books.forEach(book -> book
+				.setStocks(IntStream.range(0, 3).mapToObj(i -> new BookStock(book)).collect(Collectors.toList())));
 
 		bookRepository.save(books);
 
@@ -204,7 +202,7 @@ public class SampleDataInitializer {
 
 		// do some random Reservations
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			List<Book> allBooks = bookRepository.findAll();
 			try {
 				allBooks.forEach(book -> bookReservationService.reserveBook(LocalDateTime.now(), book.getId(),
@@ -218,12 +216,25 @@ public class SampleDataInitializer {
 
 		bookStockRepository.findAll().forEach(stock -> LOGGER.debug(stock.toString()));
 
+		for (User user : users) {
+			User foundUser = userRepository.findOneByActivationId(user.getActivationId());
+			log.info("Found user : " + foundUser + " - " + user.getActivationId());
+		}
+
 	}
 
 	private User createTestUser(String firstName, String lastName) {
 
-		return new User(firstName, lastName, firstName.toLowerCase() + "." + lastName.toLowerCase() + "@devplant.ro",
+		User user = new User(firstName, lastName,
+				firstName.toLowerCase() + "." + lastName.toLowerCase() + "@devplant.ro",
 				passwordEncoder.encode("test"));
+		user.setEnabled(true);
+		return user;
 	}
 
+	@Override
+	public void run(String... strings) throws Exception {
+		log.info("Adding sample data ... ");
+		addSampleData();
+	}
 }

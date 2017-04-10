@@ -1,9 +1,9 @@
 package com.devplant.introduction.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,6 @@ import java.util.Set;
 
 @Data
 @Entity
-@Document(indexName = "author")
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "authoredBooks")
 public class Author {
@@ -28,5 +27,6 @@ public class Author {
 	private String name;
 
 	@OneToMany(mappedBy = "author")
+	@JsonBackReference
 	private Set<Book> authoredBooks;
 }

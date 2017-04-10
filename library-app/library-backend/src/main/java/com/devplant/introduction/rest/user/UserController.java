@@ -1,7 +1,7 @@
 package com.devplant.introduction.rest.user;
 
 import com.devplant.introduction.domain.User;
-import com.devplant.introduction.repository.UserRepository;
+import com.devplant.introduction.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ public class UserController {
 	private UserRepository userRepository;
 
 	@RequestMapping("/self")
-	public ResponseEntity<User> self(Principal principal){
-		if(principal==null){
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}else{
-			return new ResponseEntity<>(userRepository.findOneByUsername(principal.getName()),HttpStatus.OK);
+	public ResponseEntity<User> self(Principal principal) {
+		if (principal == null) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		} else {
+			return new ResponseEntity<>(userRepository.findOneByUsername(principal.getName()), HttpStatus.OK);
 		}
 	}
 }

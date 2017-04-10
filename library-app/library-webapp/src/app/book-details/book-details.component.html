@@ -1,0 +1,76 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-large">
+    <md-card-header>
+      <md-card-title><h3>{{book.name}}</h3></md-card-title>
+      <md-card-subtitle>{{book.author.name}} ({{book.year}})</md-card-subtitle>
+    </md-card-header>
+    <md-card-content>
+      <p>
+        {{book.synopsis}}
+      </p>
+
+      <hr/>
+
+      <p *ngIf="book.bookStocks.length == 0 && !alreadyReserved">
+        <strong>Hint:</strong> This book is currently out of stock & not available for reservations.
+      </p>
+    </md-card-content>
+    <md-card-actions>
+
+
+      <button md-button (click)="makeReservation()"
+              *ngIf="userService.isAuthenticated() && book.bookStocks.length > 0 && !showReservationCard && !alreadyReserved">
+        Make a reservation
+      </button>
+      <button md-button [routerLink]="['/library']">Back</button>
+
+    </md-card-actions>
+  </md-card>
+
+  <md-card *ngIf="showReservationCard" fxLayout="column" fxLayoutAlign="space-around stretch" class="card-large">
+    <md-card-content>
+
+      <form class="content">
+        <md2-datepicker name="date"
+                        ngDefaultControl
+                        placeholder="Select Date"
+                        [(ngModel)]="reservationModel.pickupTime"
+                        [type]="'date'"
+                        [min]="rangeStart"
+                        [max]="rangeEnd"
+                        [mode]="'auto'"
+                        [container]="'inline'"
+                        #dateControl="ngModel"></md2-datepicker>
+      </form>
+
+    </md-card-content>
+    <md-card-actions>
+      <button md-button (click)="saveReservation()"
+              *ngIf="userService.isAuthenticated() && book.bookStocks.length > 0">Save Reservation
+      </button>
+      <button md-button (click)="hideReservation()"
+              *ngIf="userService.isAuthenticated() && book.bookStocks.length > 0">Cancel
+      </button>
+    </md-card-actions>
+
+  </md-card>
+
+  <md-card *ngIf="alreadyReserved" fxLayout="column" fxLayoutAlign="space-around stretch" class="card-large">
+    <md-card-header>
+      <md-card-title><h3>You have already reserved this book</h3></md-card-title>
+    </md-card-header>
+    <md-card-content>
+
+      <p *ngIf="!reservationBookStock.pickedUp"><strong>Pickup Date: </strong>{{reservationBookStock.pickupDate}}</p>
+      <p><strong>Return Date: </strong>{{reservationBookStock.returnDate}}</p>
+    </md-card-content>
+
+    <md-card-actions>
+      <button md-button (click)="cancelReservation()"
+              *ngIf="userService.isAuthenticated() && !reservationBookStock.pickedUp">Cancel Reservation
+      </button>
+    </md-card-actions>
+
+  </md-card>
+
+</div>

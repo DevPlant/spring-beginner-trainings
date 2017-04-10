@@ -2,8 +2,9 @@ package com.devplant.introduction.security;
 
 import com.devplant.introduction.domain.User;
 import com.devplant.introduction.exception.UserAlreadyExistsException;
-import com.devplant.introduction.repository.UserRepository;
+import com.devplant.introduction.repository.jpa.UserRepository;
 import com.devplant.introduction.rest.user.model.UserRegistrationModel;
+import com.devplant.introduction.service.UserNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserNotificationService userNotificationService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,6 +40,7 @@ public class UserService implements UserDetailsService {
 			existingUser = new User(userRegistrationModel.getFirstName(), userRegistrationModel.getLastName(),
 					userRegistrationModel.getEmail(), passwordEncoder.encode(userRegistrationModel.getPassword()));
 			userRepository.save(existingUser);
+			userNotificationService.sendUserActivationEmail(userRegistrationModel, existingUser.getActivationId());
 		} else {
 			throw new UserAlreadyExistsException();
 		}

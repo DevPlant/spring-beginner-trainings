@@ -1,0 +1,36 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <br>
+
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-large register-form">
+    <form name="form" (ngSubmit)="registerUser()" fxLayout="column" fxLayoutAlign="space-around stretch"
+          class="card-large"
+          #registerForm="ngForm">
+      <md-input-container>
+
+        <input type="text" class="form-control"
+               placeholder="Start typing to filter books ... "
+               #searchBox id="search-box" (keyup)="search(searchBox.value)" mdInput>
+
+      </md-input-container>
+
+    </form>
+
+  </md-card>
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-large register-form"
+           *ngFor="let book of books | async">
+    <md-card-header>
+      <div md-card-avatar class="example-header-image"></div>
+      <md-card-title><h3>{{book.name}}</h3></md-card-title>
+      <md-card-subtitle>{{book.author.name}} ({{book.year}})</md-card-subtitle>
+    </md-card-header>
+    <md-card-content>
+      <p>
+        {{book.synopsis}}
+      </p>
+    </md-card-content>
+    <md-card-actions>
+      <button md-button [routerLink]="['/library/details', book.id]">Show Details</button>
+    </md-card-actions>
+  </md-card>
+</div>
+

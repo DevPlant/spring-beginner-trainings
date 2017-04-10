@@ -4,8 +4,9 @@ import com.devplant.introduction.domain.BookStock;
 import com.devplant.introduction.domain.User;
 import com.devplant.introduction.exception.BookAlreadyReservedByUserException;
 import com.devplant.introduction.exception.BookNotAvailableForReservationException;
-import com.devplant.introduction.repository.BookStockRepository;
-import com.devplant.introduction.repository.UserRepository;
+import com.devplant.introduction.exception.BookPickupDateIsToFarInTheFutureException;
+import com.devplant.introduction.repository.jpa.BookStockRepository;
+import com.devplant.introduction.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,12 @@ public class BookReservationService {
 	private UserRepository userRepository;
 
 	@Transactional
-	public void reserveBook(LocalDateTime pickupDate, long bookId, String username) {
+	public BookStock reserveBook(LocalDateTime pickupDate, long bookId, String username) {
+
+		LocalDateTime now = LocalDateTime.now();
+		if (pickupDate.minusDays(3).isAfter(now)) {
+			throw new BookPickupDateIsToFarInTheFutureException();
+		}
 
 		User user = userRepository.findOneByUsername(username);
 
@@ -39,7 +45,7 @@ public class BookReservationService {
 				.orElseThrow(BookNotAvailableForReservationException::new);
 
 		// reserved now
-		bookStock.setReservationDate(LocalDateTime.now());
+		bookStock.setReservationDate(now);
 		// pickup defined be user
 		bookStock.setPickupDate(pickupDate);
 		// return date is set to 1 week after pickup
@@ -51,5 +57,9 @@ public class BookReservationService {
 
 		// save
 		userRepository.save(user);
+
+		bookStock = bookStockRepository.save(bookStock);
+
+		return bookStock;
 	}
 }

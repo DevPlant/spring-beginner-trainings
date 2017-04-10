@@ -1,0 +1,9 @@
+<md-toolbar color="primary">
+  <span routerLink="/library">DevPlant Library</span>
+  <span class="spacer"></span>
+  <a md-button routerLink="management" *ngIf="userService.isAdmin()">Manage Reservations</a>
+  <a md-button (click)="logout()" *ngIf="userService.isAuthenticated()">Logout</a>
+  <a md-button routerLink="login" *ngIf="!userService.isAuthenticated()">Login</a>
+  <a md-button routerLink="register" *ngIf="!userService.isAuthenticated()">Register</a>
+</md-toolbar>
+<router-outlet></router-outlet>

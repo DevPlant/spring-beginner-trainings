@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import static com.devplant.introduction.configuration.Roles.ROLE_PREFIX;
+
 @Data
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -21,6 +23,10 @@ public class UserAuthority implements GrantedAuthority {
 	private long id;
 
 	private String authority;
+
+	public UserAuthority(String authority) {
+		this.authority = authority.startsWith(ROLE_PREFIX) ? authority : ROLE_PREFIX+authority;
+	}
 
 	@Override
 	public String getAuthority() {

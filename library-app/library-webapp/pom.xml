@@ -6,11 +6,11 @@
 
 
   <groupId>com.devplant.introduction</groupId>
-  <artifactId>spring-basics-webapp</artifactId>
+  <artifactId>library-webapp</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>spring-basics-webapp</name>
+  <name>library-webapp</name>
 
   <properties>
     <docker.image.prefix>devplant</docker.image.prefix>
@@ -37,6 +37,11 @@
                   <targetPath>/dist</targetPath>
                   <directory>${project.basedir}/dist</directory>
                   <include>*</include>
+                </resource>
+                <resource>
+                  <targetPath>/conf</targetPath>
+                  <directory>${project.basedir}/docker/</directory>
+                  <include>nginx.conf</include>
                 </resource>
               </resources>
             </configuration>

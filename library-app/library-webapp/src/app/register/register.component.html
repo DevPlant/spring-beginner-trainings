@@ -1,0 +1,64 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-small" *ngIf="registrationSuccessful">
+    <h3>Registration Successful, we've sent you an E-Mail to activate your account!</h3>
+  </md-card>
+
+  <md-card fxLayout="column" fxLayoutAlign="space-around stretch" class="card-small" *ngIf="!registrationSuccessful">
+
+    <form name="form" (ngSubmit)="registerUser()" fxLayout="column" fxLayoutAlign="space-around stretch"
+          #registerForm="ngForm">
+      <h3>Register for the DevPlant Library</h3>
+
+      <md-input-container>
+
+        <input type="text" id="firstName" class="form-control"
+               required
+               placeholder="First Name"
+               name="firstName" [(ngModel)]="registrationModel.firstName" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <md-input-container>
+
+        <input type="text" id="lastName" class="form-control"
+               required
+               placeholder="Last Name"
+               name="lastName" [(ngModel)]="registrationModel.lastName" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <md-input-container>
+
+        <input type="text" id="email" class="form-control"
+               required
+               placeholder="Email"
+               name="email" [(ngModel)]="registrationModel.email" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <md-input-container>
+
+        <input type="text" id="password" class="form-control"
+               required minlength="6"
+               type="password"
+               placeholder="Password"
+               name="password" [(ngModel)]="registrationModel.password" mdInput
+               #name="ngModel">
+
+      </md-input-container>
+
+      <h5 *ngIf="registrationError">Registration Failed, User already registered</h5>
+
+      <div class="button-row">
+        <button md-raised-button type="submit" color="primary" [disabled]="!registerForm.form.valid">Register</button>
+      </div>
+
+    </form>
+
+
+  </md-card>
+</div>

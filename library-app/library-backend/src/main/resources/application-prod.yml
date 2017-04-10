@@ -1,0 +1,28 @@
+
+spring:
+  profiles:
+    active: sample-data,prod
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: smart0asss@gmail.com
+    password: xktgqymujlzkwtce
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            thrust: smtp.gmail.com
+          starttls:
+            required: true
+            enabled: true
+server:
+  port: 7000
+
+
+user:
+  registration:
+    account-already-activated-url: 'http://devplant.app/activation/already-activated'
+    activation-failed-url: 'http://devplant.app/activation/activation-failed'
+    activation-success-url: 'http://devplant.app/activation/activation-successful'
+    activation-link-template: 'http://devplant.app/api/user-management/activate?activationId=%s'
